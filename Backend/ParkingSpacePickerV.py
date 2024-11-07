@@ -26,8 +26,8 @@ def mouseClick(events, x, y, flags, params):
     with open('CarParkPos', 'wb') as f:
         pickle.dump(posList, f)
 
-#cap = cv2.VideoCapture(r'C:/Users/SSD/Desktop/cimpark/backend/cimpark.mp4')  
-cap = cv2.VideoCapture('rtsp://10.32.91.192:554/title')
+cap = cv2.VideoCapture(r'C:/Users/SSD/Desktop/cimpark/backend/cimpark.mp4')  
+#cap = cv2.VideoCapture('rtsp://10.32.91.192:554/title')
 
 ret, frame = cap.read()
 
