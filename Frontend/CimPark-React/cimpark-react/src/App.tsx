@@ -1,44 +1,52 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { Estacionamientos } from "./pages/estacionamientos";
 import IndexPage from "./pages/index";
 import { Camaras } from "./pages/camaras";
-import ConsultaEstacionamientoCroquis from "./pages/ConsultaEstacionamientoaCroquis"; // Asegúrate de que la ruta sea correcta
+import ConsultaEstacionamientoCroquis from "./pages/ConsultaEstacionamientoaCroquis";
+import { useCameraContext } from "./CameraContext";
+
+const estacionamientos = [
+  { 
+    nombre: "Estacionamiento 1", 
+    camaras: [
+      { nombre: "Cámara 1", videoUrl: "carPark" },
+      { nombre: "Cámara 2", videoUrl: "cimpark2" }
+    ]
+  },
+  { 
+    nombre: "Estacionamiento 2", 
+    camaras: [
+      { nombre: "Cámara 1", videoUrl: "cimpark" }
+    ]
+  },
+  { 
+    nombre: "Estacionamiento 3", 
+    camaras: [
+      { nombre: "Cámara 1", videoUrl: "cimpark4" },
+      { nombre: "Cámara 2", videoUrl: "cimpark5" },
+      { nombre: "Cámara 3", videoUrl: "cimpark6" }
+    ]
+  }
+];
 
 function App() {
-  const buttons = [
-    "Botón 1",
-    "Botón 2",
-    "Botón 3",
-    "Botón 4",
-    "Botón 5",
-    "Botón 6",
-    "Botón 7",
-    "Botón 8",
-    "Botón 9",
-    "Botón 10",
-    "Botón 11",
-    "Botón 12",
-    "Botón 13",
-    "Botón 14",
-    "Botón 15",
-    "Botón 16",
-    "Botón 17",
-    "Botón 18",
-    "Botón 19",
-    "Botón 20",
-    "Botón 21",
-    "Botón 22",
-  ];
+  const navigate = useNavigate();
+  const { setCamaras } = useCameraContext();
+
+  const handleNavigateToCamaras = (camaras) => {
+    setCamaras(camaras); // Guarda las cámaras en el contexto
+    navigate("/camaras"); // Navega a la pantalla de cámaras
+  };
 
   return (
     <Routes>
       <Route element={<IndexPage />} path="/" />
       <Route
-        element={<Estacionamientos buttonLabels={buttons} />}
+        element={<Estacionamientos estacionamientos={estacionamientos} onSelect={handleNavigateToCamaras} />}
         path="/estacionamientos"
       />
       <Route
-        element={<Camaras buttonLabels={buttons} />}
+        element={<Camaras />}
         path="/camaras"
       />
       <Route

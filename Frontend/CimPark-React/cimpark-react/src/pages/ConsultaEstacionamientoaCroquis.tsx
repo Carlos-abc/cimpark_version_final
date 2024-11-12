@@ -2,9 +2,11 @@ import { BackIcon } from "../icons/backIcon";
 import { Button, Switch } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 import { useRef, useState } from "react";
+import { useCameraContext } from "../CameraContext";
 
 function ConsultaEstacionamientoCroquis() {
   const navigate = useNavigate();
+  const { videoUrl } = useCameraContext(); // Obtener la URL del video desde el contexto
   const croquisRef = useRef<HTMLDivElement>(null);
   const [isWhiteBackground, setIsWhiteBackground] = useState(false);
 
@@ -23,7 +25,7 @@ function ConsultaEstacionamientoCroquis() {
   };
 
   const handleSwitchChange = () => {
-    setIsWhiteBackground((prev) => !prev);
+    setIsWhiteBackground((prev) => !prev); // Alterna entre las dos vistas
   };
 
   return (
@@ -65,10 +67,13 @@ function ConsultaEstacionamientoCroquis() {
         <Switch checked={isWhiteBackground} color="primary" onChange={handleSwitchChange} />
       </div>
 
-      {/* Espacio del Croquis en Tiempo Real */}
       <div ref={croquisRef} className="relative border-2 border-gray-400 w-full max-w-5xl h-[400px] md:h-[500px] lg:h-[600px] mt-8 bg-white mb-10">
         <img
-          src={isWhiteBackground ? "http://127.0.0.1:5000/video_feed_white" : "http://127.0.0.1:5000/video_feed"}
+          src={
+            isWhiteBackground 
+              ? `http://127.0.0.1:5000/video_feed_white/${videoUrl}` 
+              : `http://127.0.0.1:5000/video_feed/${videoUrl}`
+          }
           alt="Vista de croquis en tiempo real"
           className="w-full h-full object-cover"
         />
