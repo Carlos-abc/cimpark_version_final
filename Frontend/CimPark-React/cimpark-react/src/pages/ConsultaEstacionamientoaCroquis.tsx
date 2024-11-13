@@ -72,7 +72,7 @@ function ConsultaEstacionamientoCroquis() {
           src={
             isWhiteBackground 
               ? `http://127.0.0.1:5000/video_feed_white/${videoUrl}` 
-              : `http://127.0.0.1:5000/video_feed/${videoUrl}`
+              : `https://storage.googleapis.com/prueba-img-bucket/${videoUrl}`
           }
           alt="Vista de croquis en tiempo real"
           className="w-full h-full object-cover"

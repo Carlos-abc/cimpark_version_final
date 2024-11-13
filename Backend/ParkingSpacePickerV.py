@@ -7,6 +7,7 @@ video_paths = [
     r'C:/Users/SSD/Desktop/cimpark/backend/cimpark.mp4',
     r'C:/Users/SSD/Desktop/cimpark/backend/cimpark2.mp4',
     r'C:/Users/SSD/Desktop/cimpark/backend/carPark.mp4',
+     "rtsp://10.32.91.192:554/title",
 
     # Agrega más rutas de videos según sea necesario
 ]

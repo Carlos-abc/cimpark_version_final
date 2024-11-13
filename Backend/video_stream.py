@@ -32,8 +32,14 @@ class VideoStream:
             with self.lock:
                 self.ret, self.frame = self.cap.read()
                 if not self.ret:
-                    self.cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
-                    self.ret, self.frame = self.cap.read()
+                    if self.video_path.startswith("rtsp://"):
+                        # Reintentar conexión RTSP en caso de pérdida de conexión
+                        time.sleep(1)
+                        self.cap = cv2.VideoCapture(self.video_path)
+                    else:
+                        # Reiniciar el video en caso de ser un archivo local
+                        self.cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
+                        self.ret, self.frame = self.cap.read()
             time.sleep(0.03)
 
     def read(self):
@@ -50,13 +56,13 @@ video_states = {}
 shared_states = {}
 
 def load_positions(video_name):
-    car_park_file = f"{video_name}_CarParkPos"
-    if os.path.exists(car_park_file):
-        with open(car_park_file, 'rb') as f:
-            posList = pickle.load(f)
-    else:
-        posList = []
-    return posList
+    # Carga las posiciones si el video es local
+    if not video_name.startswith("rtsp://"):
+        car_park_file = f"{video_name}_CarParkPos"
+        if os.path.exists(car_park_file):
+            with open(car_park_file, 'rb') as f:
+                return pickle.load(f)
+    return []
 
 def checkParkingSpace(imgPro, img, posList, white_background=False):
     for pos in posList:
@@ -73,8 +79,13 @@ def checkParkingSpace(imgPro, img, posList, white_background=False):
             cvzone.putTextRect(img, str(count), (x1, y2 - 3), scale=1, thickness=2, offset=0, colorR=color)
 
 def get_video_stream(video_name):
-    if video_name not in video_states:
+    # Verifica si es un enlace RTSP o un archivo local
+    if video_name.startswith("rtsp://"):
+        video_path = video_name  # Usa la URL RTSP directamente
+    else:
         video_path = f'C:/Users/SSD/Desktop/cimpark/backend/{video_name}.mp4'
+
+    if video_name not in video_states:
         video_states[video_name] = VideoStream(video_path)
         shared_states[video_name] = SharedVideoState()
     return video_states[video_name], shared_states[video_name]
