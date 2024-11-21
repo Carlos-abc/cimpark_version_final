@@ -10,9 +10,11 @@ interface EstacionamientosProps {
 export const Estacionamientos: React.FC<EstacionamientosProps> = ({ estacionamientos, onSelect }) => {
   const navigate = useNavigate();
 
+
   const handleLogoClick = () => {
     navigate("/");
   };
+
 
   const handleBack = () => {
     navigate("/");
@@ -41,7 +43,7 @@ export const Estacionamientos: React.FC<EstacionamientosProps> = ({ estacionamie
 
       <div className="flex flex-col w-full flex-grow overflow-y-auto mt-4 px-4">
         <div className="flex justify-center">
-          <div className="w-full grid grid-cols-2 gap-4 xl:w-4/6 xl:grid-cols-3">
+          <div className="w-full grid grid-cols-2 gap-4 xl:w-4/6 xl:grid-cols-3 lg:w-4/6 lg:grid-cols-3 md:w-3/4 md:grid-cols-2">
             {estacionamientos.map((estacionamiento, index) => (
               <div key={index} className="w-full px-4 py-2 text-lg font-semibold text-white">
                 <Button

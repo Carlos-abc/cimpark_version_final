@@ -1,3 +1,4 @@
+// CameraContext.jsx
 import { createContext, useContext, useState } from "react";
 
 const CameraContext = createContext(null);

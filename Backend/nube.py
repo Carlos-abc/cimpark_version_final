@@ -5,9 +5,9 @@ import cv2
 import threading
 
 # Configura las credenciales de autenticación de Google Cloud
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'Backend/proyecto-python-img-f0c0f4835da0.json'
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'Backend/cimpark-6b418c69d25f.json'
 storage_client = storage.Client()
-bucket_name = 'prueba-img-bucket'
+bucket_name = 'cimpark-img'
 
 class VideoStream:
     def __init__(self, video_path):

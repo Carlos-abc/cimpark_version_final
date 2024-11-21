@@ -1,3 +1,4 @@
+// Camaras.tsx
 import { BackIcon } from "../icons/backIcon";
 import { Button } from "@nextui-org/button";
 import { useNavigate } from "react-router-dom";
@@ -5,7 +6,7 @@ import { useCameraContext } from "../CameraContext";
 
 export const Camaras: React.FC = () => {
   const navigate = useNavigate();
-  const { camaras, setVideoUrl } = useCameraContext();
+  const { camaras } = useCameraContext();
 
   const handleLogoClick = () => {
     navigate("/");
@@ -15,9 +16,8 @@ export const Camaras: React.FC = () => {
     navigate("/estacionamientos");
   };
 
-  const handleConsultaEstacionamientoCroquis = (videoUrl) => {
-    setVideoUrl(videoUrl); // Guarda la URL específica de la cámara seleccionada
-    navigate("/consulta-estacionamiento-croquis");
+  const handleConsultaEstacionamientoCroquis = (camaraId) => {
+    navigate(`/consulta-estacionamiento-croquis/${camaraId}`);
   };
 
   return (
@@ -44,11 +44,11 @@ export const Camaras: React.FC = () => {
       <div className="flex flex-col w-full flex-grow overflow-y-auto mt-4 px-4">
         <div className="flex justify-center">
           <div className="w-full grid grid-cols-2 gap-4 xl:w-4/6 xl:grid-cols-3 lg:w-4/6 lg:grid-cols-3 md:w-3/4 md:grid-cols-2">
-            {camaras.map((camara, index) => (
-              <div key={index} className="w-full px-4 py-2 text-lg font-semibold text-white">
+            {camaras.map((camara) => (
+              <div key={camara.id} className="w-full px-4 py-2 text-lg font-semibold text-white">
                 <Button
                   className="w-full bg-cyan-900 text-white rounded-md hover:bg-blue-600 text-large"
-                  onClick={() => handleConsultaEstacionamientoCroquis(camara.videoUrl)}
+                  onClick={() => handleConsultaEstacionamientoCroquis(camara.id)}
                 >
                   {camara.nombre}
                 </Button>
