@@ -3,12 +3,12 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "lint": "eslint -c .eslintrc.json ./src/**/**/*.{ts,tsx} --fix",
-    "preview": "vite preview"
-  },
+"scripts": {
+  "dev": "vite --host",
+  "build": "tsc && vite build",
+  "lint": "eslint -c .eslintrc.json ./src/**/**/*.{ts,tsx} --fix",
+  "preview": "vite preview"
+},
   "dependencies": {
     "@nextui-org/button": "2.0.38",
     "@nextui-org/code": "2.0.33",

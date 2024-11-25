@@ -1,4 +1,3 @@
-// App.jsx
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { Estacionamientos } from "./pages/estacionamientos";
 import IndexPage from "./pages/index";
