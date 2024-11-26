@@ -8,7 +8,7 @@ from google.cloud import storage
 import cvzone
 from urllib.parse import urlparse
 
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'Backend/cimpark-6b418c69d25f.json'
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = 'cimpar_oficial\Backend\cimpark-6b418c69d25f.json'
 storage_client = storage.Client()
 bucket_name = 'cimpark-img'
 

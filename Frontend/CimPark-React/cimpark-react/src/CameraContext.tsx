@@ -1,10 +1,17 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, ReactNode } from "react";
 
-const CameraContext = createContext(null);
+interface CameraContextProps {
+  camaras: any[];
+  setCamaras: React.Dispatch<React.SetStateAction<any[]>>;
+  videoUrl: string | null;
+  setVideoUrl: React.Dispatch<React.SetStateAction<string | null>>;
+}
 
-export function CameraProvider({ children }) {
-  const [camaras, setCamaras] = useState([]);
-  const [videoUrl, setVideoUrl] = useState(null);
+const CameraContext = createContext<CameraContextProps | null>(null);
+
+export function CameraProvider({ children }: { children: ReactNode }) {
+  const [camaras, setCamaras] = useState<any[]>([]);
+  const [videoUrl, setVideoUrl] = useState<string | null>(null);
 
   return (
     <CameraContext.Provider value={{ camaras, setCamaras, videoUrl, setVideoUrl }}>

@@ -6,24 +6,14 @@ import { supabase } from "../supabaseClient";
 import logo from '../styles/logo.png';
 import ErrorModal from '../components/ErrorModal';
 
-interface CameraData {
-  url_processed: string;
-  url_processed_white: string;
-}
-
-interface RouteParams {
-  idCamara: string;
-}
-
 const ConsultaEstacionamientoCroquis: React.FC = () => {
   const navigate = useNavigate();
-  const { idCamara } = useParams<RouteParams>();
+  const { idCamara } = useParams<{ idCamara: string }>();
   const croquisRef = useRef<HTMLDivElement>(null);
   const [isWhiteBackground, setIsWhiteBackground] = useState<boolean>(false);
   const [imageUrl, setImageUrl] = useState<string>("");
   const [previousImageUrl, setPreviousImageUrl] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
   const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
   const [orientation, setOrientation] = useState<'portrait' | 'landscape'>(
     window.innerHeight > window.innerWidth ? 'portrait' : 'landscape'
@@ -56,7 +46,6 @@ const ConsultaEstacionamientoCroquis: React.FC = () => {
 
         if (isMounted) {
           if (!newImageUrl) {
-            setError("No hay imagen disponible");
             setShowErrorModal(true);
             setIsLoading(false);
             return;
@@ -69,7 +58,6 @@ const ConsultaEstacionamientoCroquis: React.FC = () => {
       } catch (error) {
         console.error("Error al obtener las URLs de la cámara:", error);
         if (isMounted) {
-          setError("No se pudo cargar la imagen del estacionamiento");
           setShowErrorModal(true);
           setIsLoading(false);
         }
@@ -199,10 +187,6 @@ const ConsultaEstacionamientoCroquis: React.FC = () => {
                 onLoad={() => {
                   setTimeout(() => setPreviousImageUrl(''), 500);
                 }}
-                onError={() => {
-                  setError("No se pudo cargar la imagen del estacionamiento");
-                  setShowErrorModal(true);
-                }}
               />
               <button
                 onClick={toggleFullScreen}
@@ -226,10 +210,6 @@ const ConsultaEstacionamientoCroquis: React.FC = () => {
       <ErrorModal 
         isOpen={showErrorModal}
         onClose={() => setShowErrorModal(false)}
-        onRetry={() => {
-          setShowErrorModal(false);
-          navigate("/camaras");
-        }}
       />
     </div>
   );

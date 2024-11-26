@@ -9,11 +9,12 @@ import { supabase } from "./supabaseClient";
 
 function App() {
   const navigate = useNavigate();
-  const { setCamaras } = useCameraContext();
-  const [estacionamientos, setEstacionamientos] = useState([]);
+  const { setCamaras } = useCameraContext()!;
+  const [estacionamientos, setEstacionamientos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log("Comenzando a cargar estacionamientos..."); // Depuración
     fetchEstacionamientos();
   }, []);
 
@@ -24,38 +25,51 @@ function App() {
         .from('estacionamiento')
         .select('*');
 
-      if (estacionamientosError) throw estacionamientosError;
+      if (estacionamientosError) {
+        console.error("Error al obtener estacionamientos:", estacionamientosError); // Log de error
+        throw estacionamientosError;
+      }
+
+      console.log("Estacionamientos obtenidos:", estacionamientosData); // Verifica datos recibidos
 
       const estacionamientosConCamaras = await Promise.all(
-        estacionamientosData.map(async (est) => {
+        (estacionamientosData || []).map(async (est: any) => {
           const { data: camarasData, error: camarasError } = await supabase
             .from('camaras')
             .select('*')
             .eq('idEstacionamiento', est.idEstacionamiento);
 
-          if (camarasError) throw camarasError;
+          if (camarasError) {
+            console.error("Error al obtener cámaras:", camarasError); // Log de error
+            throw camarasError;
+          }
+
+          console.log(`Cámaras para estacionamiento ${est.idEstacionamiento}:`, camarasData); // Verifica datos de cámaras
 
           return {
+            id: est.idEstacionamiento,
             nombre: est.nombre_estacionamiento,
-            camaras: camarasData.map(cam => ({
+            camaras: (camarasData || []).map((cam: any) => ({
               id: cam.idCamara,
               nombre: cam.nombreCamara,
               url_processed: cam.url_processed,
-              url_processed_white: cam.url_processed_white
-            }))
+              url_processed_white: cam.url_processed_white,
+            })),
           };
         })
       );
 
+      console.log("Estacionamientos con cámaras procesados:", estacionamientosConCamaras); // Log final
       setEstacionamientos(estacionamientosConCamaras);
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error general:', error);
     } finally {
       setLoading(false);
     }
   }
 
-  const handleNavigateToCamaras = (camaras) => {
+  const handleNavigateToCamaras = (camaras: any) => {
+    console.log("Navegando a cámaras con:", camaras); // Depuración
     setCamaras(camaras);
     navigate("/camaras");
   };
@@ -68,16 +82,15 @@ function App() {
     <Routes>
       <Route element={<IndexPage />} path="/" />
       <Route
-        element={<Estacionamientos 
-          estacionamientos={estacionamientos} 
-          onSelect={handleNavigateToCamaras} 
-        />}
+        element={
+          <Estacionamientos
+            estacionamientos={estacionamientos}
+            onSelect={handleNavigateToCamaras}
+          />
+        }
         path="/estacionamientos"
       />
-      <Route
-        element={<Camaras />}
-        path="/camaras"
-      />
+      <Route element={<Camaras />} path="/camaras" />
       <Route
         element={<ConsultaEstacionamientoCroquis />}
         path="/consulta-estacionamiento-croquis/:idCamara"

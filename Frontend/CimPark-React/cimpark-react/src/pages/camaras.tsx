@@ -4,10 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useCameraContext } from "../CameraContext";
 import ErrorModal from '../components/ErrorModal';
+import logo from '../styles/logo.png';
 
 export const Camaras: React.FC = () => {
   const navigate = useNavigate();
-  const { camaras } = useCameraContext();
+  const { camaras } = useCameraContext()!;
   const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
 
   useEffect(() => {
@@ -21,15 +22,7 @@ export const Camaras: React.FC = () => {
     }
   }, [camaras]);
 
-  const handleLogoClick = () => {
-    navigate("/");
-  };
-
-  const handleBack = () => {
-    navigate("/estacionamientos");
-  };
-
-  const handleConsultaEstacionamientoCroquis = (camaraId) => {
+  const handleNavigate = (camaraId: string) => {
     try {
       if (!camaraId) {
         throw new Error("La cámara seleccionada no es válida.");
@@ -43,19 +36,23 @@ export const Camaras: React.FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 overflow-x-hidden">
-      <div className="flex justify-between mt-8 px-4" onClick={handleLogoClick} style={{ cursor: "pointer" }}>
+      <div className="flex justify-between mt-8 px-4" style={{ cursor: "pointer" }}>
         <div className="flex flex-1 justify-end items-end">
           <Button
             className="bg-cyan-900 text-white rounded-md hover:bg-blue-600 text-base sm:text-lg lg:text-xl w-auto px-2 sm:px-4 lg:px-6"
             isIconOnly={false}
             startContent={<BackIcon />}
-            onClick={handleBack}
+            onClick={() => navigate("/estacionamientos")}
           >
             <span className="hidden sm:inline">Regresar ahora</span>
           </Button>
         </div>
         <div className="flex flex-1 justify-center items-center">
-          <img alt="Logo" className="w-48" src="src/styles/logo.png" />
+        <img
+            src={logo}
+            alt="CimPark Logo"
+            className="w-48"
+          />
         </div>
         <div className="flex flex-1"></div>
       </div>
@@ -69,7 +66,7 @@ export const Camaras: React.FC = () => {
               <div key={camara.id} className="w-full px-4 py-2 text-lg font-semibold text-white">
                 <Button
                   className="w-full bg-cyan-900 text-white rounded-md hover:bg-blue-600 text-large"
-                  onClick={() => handleConsultaEstacionamientoCroquis(camara.id)}
+                  onClick={() => handleNavigate(camara.id)}
                 >
                   {camara.nombre}
                 </Button>
